@@ -1,4 +1,4 @@
-<h2>Topics</h2>
+<h2>All Topics </h2>
 
 <table>
     <tr>
