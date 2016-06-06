@@ -25,7 +25,9 @@ class UsersController extends AppController {
             $this->Auth->allow('add');
         }
         public function login(){
-            
+            if($this->request->is('post')){
+                
+            }
         }
         public function logout(){
             
@@ -58,6 +60,7 @@ class UsersController extends AppController {
 	public function add() {
 		if ($this->request->is('post')) {
 			$this->User->create();
+                        $this->request->data['User']['password']=  AuthComponent::password($this->request->data['User']['password']);
 			if ($this->User->save($this->request->data)) {
 				$this->Session->setFlash(__('The user has been saved.'));
 				return $this->redirect(array('action' => 'index'));
