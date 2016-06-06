@@ -4,6 +4,10 @@ class TopicsController extends AppController {
 
     public $components = array('Session');
 
+    public function beforeFilter() {
+        $this->Auth->allow('index');
+    }
+    
     public function index() {
 
         $data = $this->Topic->find('all');
