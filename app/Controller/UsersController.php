@@ -26,11 +26,17 @@ class UsersController extends AppController {
         }
         public function login(){
             if($this->request->is('post')){
-                
+                if($this->Auth->login()){
+                    return $this->redirect($this->Auth->redirectUrl());
+                }
+                else{
+                    $this->Session->setFlash('Invalid username or password');
+                }
             }
         }
         public function logout(){
-            
+            $this->Auth->logout();
+            $this->redirect('/topics/index');
         }
         public function index() {
 		$this->User->recursive = 0;
@@ -61,6 +67,7 @@ class UsersController extends AppController {
 		if ($this->request->is('post')) {
 			$this->User->create();
                         $this->request->data['User']['password']=  AuthComponent::password($this->request->data['User']['password']);
+                         $this->request->data['User']['role'] = 1;
 			if ($this->User->save($this->request->data)) {
 				$this->Session->setFlash(__('The user has been saved.'));
 				return $this->redirect(array('action' => 'index'));

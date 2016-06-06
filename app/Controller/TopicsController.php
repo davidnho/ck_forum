@@ -7,7 +7,7 @@ class TopicsController extends AppController {
     public function beforeFilter() {
         $this->Auth->allow('index');
     }
-    
+
     public function index() {
 
         $data = $this->Topic->find('all');
@@ -24,6 +24,7 @@ class TopicsController extends AppController {
     public function add() {
         if ($this->request->is('post')) {
             $this->Topic->create();
+            $this->request->data['Topic']['visible'] = 2;
             if ($this->Topic->save($this->request->data)) {
                 $this->Session->setFlash('The topic has been created');
                 $this->redirect('index');
