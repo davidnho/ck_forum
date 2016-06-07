@@ -17,23 +17,32 @@ if (AuthComponent::user()) {
         <th>Published</th>
         <th>Created</th>
         <th>Modified</th>
-        <th>Edit</th>
-        <th>Delete</th>
+        <?php if (AuthComponent::user('role') == 2) : ?>   
+            <th>Edit</th>
+            <th>Delete</th>
+        <?php endif; ?>    
     </tr>
     <?php foreach ($topics as $topic) { ?>
         <tr>
-            <?php if (AuthComponent::user('role') == 2) : ?>   
 
+            <?php if (AuthComponent::user('role') == 2) : ?>   
                 <td><?php echo $this->HTML->link($topic['Topic']['title'], array('controller' => 'topics', 'action' => 'view', $topic['Topic']['id'])); ?></td>
                 <td><?php echo $topic['Topic']['user_id']; ?></td>
                 <td><?php echo $topic['Topic']['visible']; ?></td>
                 <td><?php echo $topic['Topic']['created']; ?></td>
                 <td><?php echo $topic['Topic']['modified']; ?></td>
-                <td><?php echo $this->HTML->link('Edit', array('controller' => 'topics', 'action' => 'edit', $topic['Topic']['id'])); ?></td>
-                <td><?php echo $this->Form->postLink('Delete', array('controller' => 'topics', 'action' => 'delete', $topic['Topic']['id']), array('confirm' => 'Are you sure you want to delete this topic?')); ?></td>        <?php endif; ?>
-        </tr>
-        <tr>
-            <?php if (AuthComponent::user('role') == 1) : ?>   
+                
+                <?php if (AuthComponent::user('role') == 2) : ?>  
+                    <td><?php echo $this->HTML->link('Edit', array('controller' => 'topics', 'action' => 'edit', $topic['Topic']['id'])); ?></td>
+                    <td><?php echo $this->Form->postLink('Delete', array('controller' => 'topics', 'action' => 'delete', $topic['Topic']['id']), array('confirm' => 'Are you sure you want to delete this topic?')); ?>
+                    </td>       
+                <?php endif; ?>   
+                    
+            </tr>
+            <tr>
+            <?php endif; ?>
+                
+            <?php if (AuthComponent::user('role') == 1 || !AuthComponent::user()) : ?>   
                 <?php if ($topic['Topic']['visible'] == 1): ?>
 
                     <td><?php echo $this->HTML->link($topic['Topic']['title'], array('controller' => 'topics', 'action' => 'view', $topic['Topic']['id'])); ?></td>
@@ -53,13 +62,4 @@ if (AuthComponent::user()) {
 </table>
 
 
-<!--for testing ...-->
-<?php
-//echo $framework . '<br>';
-//foreach ($names as $name) {
-//    echo $name . '<br>';
-//}
-//foreach ($info as $inf) {
-//    echo $inf . '<br>';
-//}
-?>
+
