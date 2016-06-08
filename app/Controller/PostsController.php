@@ -6,7 +6,12 @@ class PostsController extends AppController {
 
     public function index() {
 
+        if(AuthComponent::user('role')==1){
+            $this->redirect(array('controller'=>'topics','action'=>'index'));
+        }
+        
         $data = $this->Post->find('all');
+        
         $this->set('posts', $data);
     }
 
@@ -16,10 +21,10 @@ class PostsController extends AppController {
             $this->Post->create();
             
             $this->request->data['Post']['topic_id']=$id;
-            
+            $this->request->data['Post']['user_id'] = AuthComponent::user('id'); 
             if ($this->Post->save($this->request->data)) {
                 $this->Session->setFlash('The post has been created');
-                $this->redirect('index');
+                $this->redirect('/topics/view/'.$id);
             }
         }
         $this->set('topics', $this->Post->Topic->find('list'));

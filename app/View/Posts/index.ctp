@@ -1,6 +1,6 @@
 <h2>Posts</h2>
 <pre>
-    <?php print_r($posts); ?>
+    
 </pre>
 <table>
     <tr>
